@@ -1,0 +1,118 @@
+#
+# wm independent hotkeys
+#
+
+# terminal emulator
+super + Return
+	alacritty
+
+# program launcher
+super + r
+	rofi -show drun
+
+# make sxhkd reload its configuration files:
+super + ctrl + r
+	pkill -USR1 -x sxhkd && sh /home/jackson/.config/bspwm/bspwmrc
+
+super + y
+	mpv $(xclip -selection c -o)
+
+#
+# bspwm hotkeys
+#
+
+# quit/restart bspwm
+ctrl + alt + Delete
+	bspc quit
+
+# close and kill
+super + q
+	bspc node -c
+
+# send the newest marked node to the newest preselected node
+super + y
+	bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest window
+super + g
+	bspc node -s biggest.window
+
+#
+# state/flags
+#
+
+# set the window state
+super + f
+	bspc node -t '~fullscreen'
+
+super + t
+	bspc node -t '~floating'
+
+super + shift + t
+	bspc node -t '~tiled'
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# focus the node in the given direction
+super + {h,j,k,l}
+	bspc node -f {west,south,north,east}
+
+# swap the current node with one to the side
+super + ctrl + {h,j,k,l}
+	bspc node -n {west,south,north,east}
+
+#
+# move/resize
+#
+
+super + shift + {h,j,k,l}
+	bspc node -z {left -120 0 || bspc node -z right -120 0, \
+                bottom 0 120 || bspc node -z top 0 120,\
+                top 0 -120 || bspc node -z bottom 0 -120,\
+                right 120 0 || bspc node -z left 120 0}
+
+super + space
+	bspc node -f next.floating
+
+# screenshot
+Print
+	flameshot gui
+
+super + shift + s
+	flameshot gui
+
+# "Config" options
+super + c + {s,b,v,z,t}
+	alacritty -e nvim {~/.config/sxhkd/sxhkdrc, \
+					~/.config/bspwm/bspwmrc, \
+					~/.vimrc, \
+					~/.zshrc, \
+					~/Documents/Vault/TODO/Today.md}
+
+#
+# Media controls
+#
+
+ctrl + shift + Up
+	sh ~/bin/switch-audio
+
+button10
+	playerctl --player=spotify,mpv,%any play-pause
+button11
+	amixer -D pulse sset Master '5%-'
+button12
+	amixer -D pulse sset Master '5%+'
+button13
+	playerctl --player=spotify,mpv,%any previous
+button14
+	playerctl --player=spotify,mpv,%any next

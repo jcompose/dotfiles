@@ -1,0 +1,22 @@
+#! /bin/sh
+
+width=$(xrandr | grep ' connected' | sed 's/^.* connected //' | sed 's/\+.*//' | sed 's/x.*//')
+((offsetx=$width-540))
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+bspc monitor -d 1 2 3 4 5
+
+bspc config border_width         2
+bspc config window_gap         	 15
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+bspc config top_padding    		 40
+
+bspc config normal_border_color  "$(xrdb -get color8)"
+bspc config focused_border_color  "$(xrdb -get color4)"
+
+bspc rule -a mpv state=floating sticky=on rectangle=480x270+$offsetx+90
+
+sh ~/.config/polybar/scripts/launch_simple.sh
