@@ -21,10 +21,12 @@ export LESS_TERMCAP_me=$'\e[0m' 		# Stop bold, blink, and underline
 export LESS_TERMCAP_se=$'\e[0m' 		# Stop standout
 export LESS_TERMCAP_ue=$'\e[0m' 		# Stop underline
 
-# Scripts
+# Exports
 export PATH="$PATH:$HOME/bin"
-
 export TERMINAL="alacritty"
+export BW_CLIENTID="$(cat ~/.api_keys/BW_CLIENTID)"
+export BW_CLIENTSECRET="$(cat ~/.api_keys/BW_CLIENTSECRET)"
+export BW_PASSWORD="$(cat ~/.api_keys/BW_PASSWORD)"
 
 # Aliases
 alias vi="nvim"
@@ -37,6 +39,7 @@ alias groceries="vim ~/Documents/Vault/TODO/Groceries.md"
 alias readme="cat README.md | less"
 alias today="vim ~/Documents/Vault/Journal/$(date +%Y_%m_%d).md"
 alias yesterday="vim ~/Documents/Vault/Journal/$(date --date='yesterday' +%Y_%m_%d).md"
+alias canto="canto-curses"
 
 # TODO aliases
 alias summer="vim ~/Documents/Vault/TODO/Summer.md"

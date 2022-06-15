@@ -50,9 +50,13 @@ fi
 
 # This makes it so the cursor starts as the pointer when placed on the background, rather than the X
 xsetroot -cursor_name arrow
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+fcitx5 &
 
 # Run the stuff
 picom -b --experimental-backends --vsync
-sh ~/bin/fehbg ~/Photos/vim.png
+sh ~/bin/fehbg ~/Photos/space.jpg
 redshift -O 2850
 exec bspwm
