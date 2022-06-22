@@ -10,12 +10,19 @@ super + Return
 super + r
 	rofi -show drun
 
+# Run canto
+super + 0
+	bspc rule -a Alacritty -o state=fullscreen && alacritty -e canto-curses
+
 # make sxhkd reload its configuration files:
 super + ctrl + r
 	pkill -USR1 -x sxhkd && sh /home/jackson/.config/bspwm/bspwmrc
 
 super + y
 	mpv $(xclip -selection c -o)
+
+super + p
+	streamlist
 
 #
 # bspwm hotkeys
@@ -32,10 +39,6 @@ super + q
 # send the newest marked node to the newest preselected node
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
-
-# swap the current node and the biggest window
-super + g
-	bspc node -s biggest.window
 
 #
 # state/flags
@@ -91,13 +94,24 @@ Print
 super + shift + s
 	flameshot gui
 
+super + e
+	colorpicker --short --one-shot | xclip -i -selection "clipboard"
+
+super + period
+	QT_SCALE_FACTOR=1.5 emoji-picker
+
 # "Config" options
-super + c + {s,b,v,z,t}
-	alacritty -e nvim {~/.config/sxhkd/sxhkdrc, \
-					~/.config/bspwm/bspwmrc, \
-					~/.vimrc, \
-					~/.zshrc, \
-					~/Documents/Vault/TODO/Today.md}
+super + c
+	alacritty -e sh -c "nvim $(echo -e \
+		'~/.zshrc\n'\
+		'~/.vimrc\n'\
+		'~/.config/sxhkd/sxhkdrc\n'\
+		'~/.config/bspwm/bspwmrc\n'\
+		'~/.config/alacritty/alacritty.yml.in\n'\
+		'~/.config/picom/picom.conf\n'\
+		'~/.config/polybar/bars/simple.ini\n'\
+		'~/Documents/Vault/TODO/Summer.md'\
+	| rofi -dmenu)"
 
 #
 # Media controls
