@@ -1,4 +1,3 @@
-
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
@@ -21,12 +20,11 @@ export LESS_TERMCAP_me=$'\e[0m' 		# Stop bold, blink, and underline
 export LESS_TERMCAP_se=$'\e[0m' 		# Stop standout
 export LESS_TERMCAP_ue=$'\e[0m' 		# Stop underline
 
-# Exports
-export PATH="$PATH:$HOME/bin"
-export TERMINAL="alacritty"
-export BW_CLIENTID="$(cat ~/.api_keys/BW_CLIENTID)"
-export BW_CLIENTSECRET="$(cat ~/.api_keys/BW_CLIENTSECRET)"
-export BW_PASSWORD="$(cat ~/.api_keys/BW_PASSWORD)"
+export PATH="$PATH:$HOME/bin" 								# Include my own scripts in the path
+export TERMINAL="alacritty"									# Used for BSPWM I think
+export BW_CLIENTID="$(cat ~/.api_keys/BW_CLIENTID)"			# Used for automatic BW usage
+export BW_CLIENTSECRET="$(cat ~/.api_keys/BW_CLIENTSECRET)"	# Used for automatic BW usage
+export BW_PASSWORD="$(cat ~/.api_keys/BW_PASSWORD)"			# Used for automatic BW usage
 
 # Aliases
 alias vi="nvim"
@@ -41,7 +39,7 @@ alias today="vim ~/Vault/Journal/$(date +%Y_%m_%d).md"
 alias yesterday="vim ~/Vault/Journal/$(date --date='yesterday' +%Y_%m_%d).md"
 alias canto="canto-curses"
 
-# TODO aliases
+# TODO list aliases
 alias summer="vim ~/Vault/TODO/Summer.md"
 alias todo="vim ~/Vault/TODO/Today.md"
 

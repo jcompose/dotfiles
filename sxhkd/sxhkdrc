@@ -105,6 +105,7 @@ super + c
 	alacritty -e sh -c "nvim $(echo -e \
 		'~/.zshrc\n'\
 		'~/.vimrc\n'\
+		'~/.xinitrc\n'\
 		'~/.config/sxhkd/sxhkdrc\n'\
 		'~/.config/bspwm/bspwmrc\n'\
 		'~/.config/alacritty/alacritty.yml.in\n'\
