@@ -22,6 +22,7 @@ export LESS_TERMCAP_ue=$'\e[0m' 		# Stop underline
 
 export PATH="$PATH:$HOME/bin" 								# Include my own scripts in the path
 export TERMINAL="alacritty"									# Used for BSPWM I think
+export TERM="alacritty"										# Used for xdg-open I think
 export BW_CLIENTID="$(cat ~/.api_keys/BW_CLIENTID)"			# Used for automatic BW usage
 export BW_CLIENTSECRET="$(cat ~/.api_keys/BW_CLIENTSECRET)"	# Used for automatic BW usage
 export BW_PASSWORD="$(cat ~/.api_keys/BW_PASSWORD)"			# Used for automatic BW usage
