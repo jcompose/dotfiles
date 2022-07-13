@@ -9,15 +9,16 @@ bspc monitor -d 1 2 3 4 5
 
 bspc config border_width         2
 bspc config window_gap         	 15
-bspc config split_ratio          0.52
+bspc config split_ratio          0.5
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
-bspc config top_padding    		 40
+bspc config top_padding    		 45
 
 bspc config normal_border_color  "$(xrdb -get color8)"
 bspc config focused_border_color  "$(xrdb -get color4)"
 
 bspc rule -a mpv state=floating sticky=on rectangle=480x270+$offsetx+90
-bspc rule -a "zoom :*:zoom " state=floating
+bspc rule -a Pavucontrol state=floating
+bspc rule -a "zoom :*:zoom " state=floating follow=on border=off
 
 sh ~/.config/polybar/scripts/launch_simple.sh

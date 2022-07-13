@@ -43,7 +43,7 @@ fcitx5 &
 picom -b --experimental-backends --vsync
 
 # Background setting
-sh ~/bin/fehbg ~/Photos/space.jpg
+sh ~/bin/fehbg ~/Photos/BGs/space.jpg
 
 # Redshift
 redshift -O 2850

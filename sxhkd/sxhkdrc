@@ -14,16 +14,28 @@ super + r
 super + 0
 	bspc rule -a Alacritty -o state=fullscreen && alacritty -e canto-curses
 
+# Open a new vim session in fullscreen
+super + v
+	bspc rule -a Alacritty -o state=fullscreen && alacritty -e nvim
+
 # make sxhkd reload its configuration files:
 super + ctrl + r
 	pkill -USR1 -x sxhkd && sh /home/jackson/.config/bspwm/bspwmrc
 
+# Take current clipboard selection and pipe to MPV
 super + y
 	mpv $(xclip -selection c -o)
 
+# Open my streamers list
 super + p
 	streamlist
 
+# Use alt + tab as an alternate window switching scheme
+alt + Tab
+	bspc node -f next.leaf
+
+alt + shift + Tab
+	bspc node -f prev.leaf
 #
 # bspwm hotkeys
 #
@@ -34,6 +46,9 @@ ctrl + alt + Delete
 
 # close and kill
 super + q
+	bspc node -c
+
+alt + F4
 	bspc node -c
 
 # send the newest marked node to the newest preselected node
@@ -111,7 +126,7 @@ super + c
 		'~/.config/alacritty/alacritty.yml.in\n'\
 		'~/.config/picom/picom.conf\n'\
 		'~/.config/polybar/bars/simple.ini\n'\
-		'~/Documents/Vault/TODO/Summer.md'\
+		'~/Vault/TODO/Summer.md'\
 	| rofi -dmenu)"
 
 #
