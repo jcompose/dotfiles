@@ -30,6 +30,10 @@ super + y
 super + p
 	streamlist
 
+# Open HTOP
+super + F1 
+	bspc rule -a Alacritty -o state=floating && alacritty -e htop
+
 # Use alt + tab as an alternate window switching scheme
 alt + Tab
 	bspc node -f next.leaf

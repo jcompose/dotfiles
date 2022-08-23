@@ -38,7 +38,6 @@ alias groceries="vim ~/Vault/TODO/Groceries.md"
 alias readme="cat README.md | less"
 alias today="vim ~/Vault/Journal/$(date +%Y_%m_%d).md"
 alias yesterday="vim ~/Vault/Journal/$(date --date='yesterday' +%Y_%m_%d).md"
-alias canto="canto-curses"
 
 # TODO list aliases
 alias summer="vim ~/Vault/TODO/Summer.md"

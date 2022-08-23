@@ -21,6 +21,18 @@ set shiftwidth=4			" Indentation level = 4 spaces
 set number relativenumber	" Line numbers + relative distances
 set cursorline				" Highlight current line
 
+" This is so I can press <F9> to run python files
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+
+" Autocomplete for brackets
+inoremap { {}<Esc>ha
+inoremap ( ()<Esc>ha
+inoremap [ []<Esc>ha
+inoremap " ""<Esc>ha
+inoremap ' ''<Esc>ha
+inoremap ` ``<Esc>ha
+
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
