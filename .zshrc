@@ -33,15 +33,10 @@ alias vim="nvim"
 alias ls="ls --color=auto"
 alias ll="ls -Al --color=auto"
 alias ff="fastfetch"
-alias vault="cd ~/Vault"
-alias groceries="vim ~/Vault/TODO/Groceries.md"
-alias readme="cat README.md | less"
-alias today="vim ~/Vault/Journal/$(date +%Y_%m_%d).md"
-alias yesterday="vim ~/Vault/Journal/$(date --date='yesterday' +%Y_%m_%d).md"
 
 # TODO list aliases
-alias summer="vim ~/Vault/TODO/Summer.md"
-alias todo="vim ~/Vault/TODO/Today.md"
+alias projects="vim ~/Vault/TODO/Projects.md"
+alias todo="vim ~/Vault/TODO/todo.md"
 
 # Start!
 PROMPT=$'%{\e[1;31m%}[%{\e[0;33m%}%n%{\e[0;32m%}@%{\e[0;36m%}%m %{\e[0;35m%}%~%{\e[1;31m%}]%{\e[0m%} $ '

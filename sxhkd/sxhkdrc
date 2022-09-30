@@ -10,14 +10,6 @@ super + Return
 super + r
 	rofi -show drun
 
-# Run canto
-super + 0
-	bspc rule -a Alacritty -o state=fullscreen && alacritty -e canto-curses
-
-# Open a new vim session in fullscreen
-super + v
-	bspc rule -a Alacritty -o state=fullscreen && alacritty -e nvim
-
 # make sxhkd reload its configuration files:
 super + ctrl + r
 	pkill -USR1 -x sxhkd && sh /home/jackson/.config/bspwm/bspwmrc
@@ -34,6 +26,13 @@ super + p
 super + F1 
 	bspc rule -a Alacritty -o state=floating && alacritty -e htop
 
+# Open my study music playlist
+super + x
+	mpv --playlist=/home/jackson/Music/Playlists/mario_study_music.m3u
+
+super + shift + x
+	pkill mpv
+
 # Use alt + tab as an alternate window switching scheme
 alt + Tab
 	bspc node -f next.leaf
@@ -46,7 +45,11 @@ alt + shift + Tab
 
 # quit/restart bspwm
 ctrl + alt + Delete
-	bspc quit
+	sh -c "$(echo \
+		'bspc quit\n'\
+		'shutdown now\n'\
+		'reboot'\
+	| rofi -dmenu)"
 
 # close and kill
 super + q
@@ -141,12 +144,12 @@ ctrl + shift + Up
 	sh ~/bin/switch-audio
 
 button10
-	playerctl --player=spotify,mpv,%any play-pause
+	playerctl --player=%any play-pause
 button11
 	amixer -D pulse sset Master '5%-'
 button12
 	amixer -D pulse sset Master '5%+'
 button13
-	playerctl --player=spotify,mpv,%any previous
+	playerctl --player=%any previous
 button14
-	playerctl --player=spotify,mpv,%any next
+	playerctl --player=%any next

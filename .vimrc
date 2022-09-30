@@ -8,6 +8,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'lervag/vimtex'
 call plug#end()
 
 " Configure so the lightline shows up with 1 window
@@ -32,6 +33,9 @@ inoremap [ []<Esc>ha
 inoremap " ""<Esc>ha
 inoremap ' ''<Esc>ha
 inoremap ` ``<Esc>ha
+
+" This is stuff for VimTex
+let g:vimtex_view_method = 'mupdf'
 
 " Some servers have issues with backup files, see #649.
 set nobackup
