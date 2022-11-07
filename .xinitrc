@@ -48,5 +48,9 @@ sh ~/bin/fehbg ~/Photos/BGs/space.jpg
 # Redshift
 redshift -O 2850
 
-# Window Manager
-exec bspwm
+# BSPWM
+# exec bspwm
+
+# KDE Plasma
+export DESKTOP_SESSION=plasma
+exec startplasma-x11
