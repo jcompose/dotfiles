@@ -3,15 +3,10 @@ HISTSIZE=1000
 SAVEHIST=1000
 unsetopt beep
 bindkey -e
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
 zstyle :compinstall filename '/home/jackson/.zshrc'
-
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export LESS_TERMCAP_md=$'\e[1;36m' 		# Start bold
 export LESS_TERMCAP_so=$'\e[1;33m' 		# Start standout
@@ -20,24 +15,24 @@ export LESS_TERMCAP_me=$'\e[0m' 		# Stop bold, blink, and underline
 export LESS_TERMCAP_se=$'\e[0m' 		# Stop standout
 export LESS_TERMCAP_ue=$'\e[0m' 		# Stop underline
 
-export PATH="$PATH:$HOME/bin" 								# Include my own scripts in the path
-export TERMINAL="alacritty"									# Used for BSPWM I think
-export TERM="alacritty"										# Used for xdg-open I think
-export BW_CLIENTID="$(cat ~/.api_keys/BW_CLIENTID)"			# Used for automatic BW usage
-export BW_CLIENTSECRET="$(cat ~/.api_keys/BW_CLIENTSECRET)"	# Used for automatic BW usage
-export BW_PASSWORD="$(cat ~/.api_keys/BW_PASSWORD)"			# Used for automatic BW usage
-
 # Aliases
 alias vi="nvim"
 alias vim="nvim"
 alias ls="ls --color=auto"
 alias ll="ls -Al --color=auto"
-alias ff="fastfetch"
+alias ff="neofetch"
+alias jn="jupyter-notebook"
 
-# TODO list aliases
-alias projects="vim ~/Vault/TODO/Projects.md"
-alias todo="vim ~/Vault/TODO/todo.md"
+# Project aliases
+alias phys="vim ~/Desktop/PHYSICS\ Final/Cheat_Sheet/main.tex"
+alias ge="vim -S ~/Documents/GameEngine/gameengine"
+alias az="vim -S ~/Desktop/u\ ^\ n/notes"
+alias linalg="vim ~/Desktop/Math/Linear\ Algebra/Notes.tex && open ~/Desktop/Math/Linear\ Algebra/LinAlg.pdf"
+
+# Path
+export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"
+export PATH="/Users/jacksontcarroll/bin:$PATH"
 
 # Start!
 PROMPT=$'%{\e[1;31m%}[%{\e[0;33m%}%n%{\e[0;32m%}@%{\e[0;36m%}%m %{\e[0;35m%}%~%{\e[1;31m%}]%{\e[0m%} $ '
-fastfetch
+neofetch
