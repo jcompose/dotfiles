@@ -3,10 +3,8 @@ HISTSIZE=1000
 SAVEHIST=1000
 unsetopt beep
 bindkey -e
-zstyle :compinstall filename '/home/jackson/.zshrc'
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 export LESS_TERMCAP_md=$'\e[1;36m' 		# Start bold
 export LESS_TERMCAP_so=$'\e[1;33m' 		# Start standout
@@ -20,8 +18,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias ls="ls --color=auto"
 alias ll="ls -Al --color=auto"
-alias ff="neofetch"
-alias jn="jupyter-notebook"
+alias ff="fastfetch"
 
 # Project aliases
 alias phys="vim ~/Desktop/PHYSICS\ Final/Cheat_Sheet/main.tex"
@@ -31,8 +28,16 @@ alias linalg="vim ~/Desktop/Math/Linear\ Algebra/Notes.tex && open ~/Desktop/Mat
 
 # Path
 export PATH="/opt/homebrew/opt/ffmpeg@4/bin:$PATH"
+export PATH="/Users/jacksontcarroll/Documents/Programs/fastfetch/build:$PATH"
 export PATH="/Users/jacksontcarroll/bin:$PATH"
+
+# These are for SDL to work on M1 Mac
+BREW_PREFIX=$(brew --prefix)
+export LD_LIBRARY_PATH="$BREW_PREFIX/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$BREW_PREFIX/lib:$LIBRARY_PATH"
+export CPATH="$BREW_PREFIX/include:$CPATH"
+export CPATH="/opt/local/include:$CPATH"
 
 # Start!
 PROMPT=$'%{\e[1;31m%}[%{\e[0;33m%}%n%{\e[0;32m%}@%{\e[0;36m%}%m %{\e[0;35m%}%~%{\e[1;31m%}]%{\e[0m%} $ '
-neofetch
+fastfetch
