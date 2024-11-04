@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# TODO: Bridged networking on 192.168.2.0/24 should be set up in systemd-networkd
+
+qemu-system-x86_64 \
+  -vga qxl \
+  -device virtio-serial-pci \
+  -spice unix=on,addr=/tmp/vm_spice.socket,disable-ticketing=on \
+  -device virtserialport,chardev=spicechannel10,name=com.redhat.spice.0 \
+  -chardev spicevmc,id=spicechannel10,name=vdagent \
+  -daemonize \
+  -accel kvm \
+  -m 4G \
+  -cpu host \
+  -smp 4 \
+  -drive file=/home/jackson/Projects/VMs/img/Void,format=raw

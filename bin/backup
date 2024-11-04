@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# A script to perform incremental backups using rsync
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly SOURCE_DIR="${HOME}"
+readonly BACKUP_DIR="/usr/share/Backups"
+readonly DATETIME="$(date '+%Y-%m-%d_%H:%M:%S')"
+readonly BACKUP_PATH="${BACKUP_DIR}/${DATETIME}"
+readonly LATEST_LINK="${BACKUP_DIR}/latest"
+
+# print out all the values
+
+mkdir -p "${BACKUP_DIR}"
+
+rsync -aP --delete \
+  "${SOURCE_DIR}/" \
+  --link-dest "${LATEST_LINK}" \
+  --exclude=".cache" \
+  "${BACKUP_PATH}"
+
+rm "${LATEST_LINK}"
+ln -s "${BACKUP_PATH}" "${LATEST_LINK}"

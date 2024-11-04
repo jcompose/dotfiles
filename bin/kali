@@ -1,0 +1,27 @@
+#!/bin/sh
+
+export SDL_VIDEO_X11_DGAMOUSE=0
+
+  # -display spice-app \
+  # -spice unix=on,addr=/tmp/vm_spice.socket,disable-ticketing=on \
+  # -device virtio-serial-pci \
+  # -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+  # -chardev spicevmc,id=spicechannel0,name=vdagent \
+  # -display spice-app \
+  # -chardev spicevmc,id=spicechannel0,name=vdagent \
+  # -spice unix=on,addr=/tmp/vm_spice.socket,disable-ticketing=on \
+  # -device virtio-serial-pci \
+  # -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+  # -device vfio-pci,host=00:02.0 \
+  # -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd \
+  # -drive if=pflash,format=raw,file=/home/jackson/Projects/Kali/OVMF_VARS.4m.fd \
+  # -audiodev sdl,id=snd0 \
+
+sudo qemu-system-x86_64 \
+  -machine type=q35,accel=kvm \
+  -cpu host \
+  -smp 8 \
+  -m 8G \
+  -display sdl,gl=on,grab-mod=lctrl-lalt \
+  -usb -device usb-tablet \
+  -drive file=/home/jackson/Projects/Kali/Kali,format=qcow2

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+  # -device vfio-pci,host=01:00.0 \
+  # -device vfio-pci,host=01:00.1 \
+  # -device usb-host,vendorid=0x05e3,productid=0x0610 \
+  # -device usb-host,vendorid=0x0a12,productid=0x0001 \
+  # -device usb-host,vendorid=0x045e,productid=0x0840 \
+  # -device usb-host,vendorid=0x045e,productid=0x0b12 \
+  # -device usb-host,vendorid=0x046d,productid=0xc332 \
+  # -device usb-host,vendorid=0x0c45,productid=0x652f \
+  # -vga std \
+  # -display sdl,gl=on \
+  # -audiodev sdl,id=snd0 \
+
+sudo qemu-system-x86_64 \
+  -m 8G \
+  -machine type=q35,accel=kvm \
+  -cpu host \
+  -smp 8 \
+  -display spice-app \
+  -spice unix=on,addr=/tmp/vm_spice.socket,disable-ticketing=on \
+  -device virtio-serial-pci \
+  -device virtserialport,chardev=spicechannel0,name=com.redhat.spice.0 \
+  -chardev spicevmc,id=spicechannel0,name=vdagent \
+  -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd \
+  -drive if=pflash,format=raw,file=/home/jackson/Projects/Windows/OVMF_VARS.4m.fd \
+  -drive file=/dev/disk/by-id/nvme-WD_BLACK_SN770_1TB_23505B805126,format=raw,media=disk \
+  -usb -device usb-tablet \
+  -drive file=/home/jackson/Projects/Windows/Windows,format=qcow2

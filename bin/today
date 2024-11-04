@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+template="$HOME/Documents/Journal/template.md"
+file="$HOME/Documents/Journal/$(date +%Y-%m-%d).md"
+if [[ ! -e $file ]]; then
+  cat $template > $file
+fi
+nvim $file

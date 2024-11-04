@@ -1,0 +1,290 @@
+networks:
+  docker0:
+    name: docker0
+    driver: bridge
+
+services:
+
+  # VPN must be on, otherwise nothing else works
+  vpn:
+    container_name: vpn
+    image: dperson/openvpn-client
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      - TZ=America/New_York
+      - OPENVPN_PROVIDER=YOUR_VPN_PROVIDER
+      - OPENVPN_USERNAME=YOUR_VPN_USERNAME
+      - OPENVPN_PASSWORD=YOUR_VPN_PASSWORD
+    volumes:
+      - /path/to/your/vpn/config:/vpn
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Lidarr for Music
+  lidarr:
+    container_name: lidarr
+    image: ghcr.io/hotio/lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/jackson/Projects/Server/Music:/app/Music
+      - /home/jackson/Projects/Server/Downloads:/app/Downloads
+      - /home/jackson/Projects/Server/.config/lidarr:/app/lidarr
+    ports:
+      - "55556:8686"
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Sonarr for TV Shows
+  sonarr:
+    container_name: sonarr
+    image: ghcr.io/hotio/sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/jackson/Projects/Server/TV_Shows:/app/TV_Shows
+      - /home/jackson/Projects/Server/Downloads:/app/Downloads
+      - /home/jackson/Projects/Server/.config/sonarr:/app/sonarr
+    ports:
+      - "55557:8989"
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Radarr for Movies
+  radarr:
+    container_name: radarr
+    image: ghcr.io/hotio/radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/jackson/Projects/Server/Movies:/app/Movies
+      - /home/jackson/Projects/Server/Downloads:/app/Downloads
+      - /home/jackson/Projects/Server/.config/radarr:/app/radarr
+    ports:
+      - "55558:7878"
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Bazarr for subtitles
+  bazarr:
+    container_name: bazarr
+    image: ghcr.io/hotio/bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/jackson/Projects/Server/TV_Shows:/app/TV_Shows
+      - /home/jackson/Projects/Server/Movies:/app/Movies
+      - /home/jackson/Projects/Server/.config/bazarr:/app/bazarr
+    ports:
+      - "55559:6767"
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Prowlarr for indexing
+  prowlarr:
+    container_name: prowlarr
+    image: ghcr.io/hotio/prowlarr
+    ports:
+      - "55560:9696"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/New_York
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # qBittorrent for torrenting
+  qbittorrent:
+    container_name: qbittorrent
+    image: ghcr.io/hotio/qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/New_York
+      - WEBUI_PORT=8080
+    volumes:
+      - /home/jackson/Projects/Server/Downloads:/app/Downloads
+      - /home/jackson/Projects/Server/.config/qbittorrent:/app/qbittorrent
+    ports:
+      - "55561:8080"
+      - "55562:6881"
+      - "55562:6881/udp"
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Requestrr for Discord requesting
+  requestrr:
+    container_name: requestrr
+    image: ghcr.io/hotio/requestrr
+    ports:
+      - "55563:4545"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=Etc/UTC
+    volumes:
+      - /home/jackson/Projects/Server/.config/requestrr:/app/requestrr
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Unpackerr for extracting from qbittorrent
+  unpackerr:
+    container_name: unpackerr
+    image: golift/unpackerr
+    volumes:
+      - /home/jackson/Projects/Server/Downloads:/app/Downloads
+    user: 1001:100
+    environment:
+      - TZ=America/New_York
+      - UN_LOG_FILE=/app/downloads/unpackerr.log
+      - UN_SONARR_0_URL=http://192.168.0.2:55557
+      - UN_SONARR_0_API_KEY=32coolcatcharacters
+      - UN_RADARR_0_URL=http://192.168.0.2:55558
+      - UN_RADARR_0_API_KEY=32coolkatcharacters
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  flaresolverr:
+    container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    ports:
+      - "55564:8191"
+    environment:
+      - TZ=America/New_York
+    restart: unless-stopped 
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # Home dashboard where you can visit all this stuff
+  dashy:
+    image: lissy93/dashy
+    container_name: Dashy
+    volumes:
+      - /home/jackson/Projects/Server/.config/dashy/conf.yml:/app/user-data/conf.yml
+    ports:
+      - 55565:8080
+    environment:
+      - NODE_ENV=production
+      - UID=1000
+      - GID=1000
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  db:
+    image: postgres:13
+    container_name: gitea-db
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea_password
+      - POSTGRES_DB=gitea
+    volumes:
+      - gitea-db-data:/var/lib/postgresql/data
+    networks:
+      - gitea-network
+
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - DB_TYPE=postgres
+      - DB_HOST=db:5432
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD=gitea_password
+      - GITEA__server__ROOT_URL=http://localhost:3000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea_password
+    ports:
+      - "3000:3000"
+      - "2222:22"  # SSH access
+    volumes:
+      - gitea-data:/data
+    networks:
+      - gitea-network
+    depends_on:
+      - db
+
+  bitwarden:
+    container_name: bitwarden
+    image: bitwardenrs/server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /home/jackson/Projects/Server/.config/bitwarden:/data
+    ports:
+      - "55566:80"
+    restart: unless-stopped
+    depends_on:
+      - vpn
+    networks:
+      - docker0
+
+  # TODO: add these
+  # traefik
+  # home-assistant
+  # fedeverse
+  # mail
+  # rss
+  # incus
+  # siem
+  # firewall
+  # llm
+  # podcast fetcher
+  # webdav

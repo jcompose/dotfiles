@@ -1,0 +1,31 @@
+#!/bin/sh
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+bspc monitor -d 1 2 3
+
+bspc config border_width        2
+bspc config window_gap          4	
+bspc config split_ratio         0.5
+bspc config borderless_monocle  true
+bspc config gapless_monocle     true
+bspc config bottom_padding      20
+bspc config top_padding      	  0
+
+bspc config normal_border_color "$BLACK"
+bspc config focused_border_color "$CYAN"
+bspc config presel_feedback_color "$RED"
+
+bspc rule -r \*
+
+bspc rule -a mpv state=floating rectangle=250x150+20+20 sticky=on private=on
+bspc rule -a zenity state=floating sticky=on private=on
+
+# bspc rule -a \* desktop=^5
+# bspc rule -a Alacritty desktop=^1 follow=off 
+# bspc rule -a firefox desktop=^2 follow=off 
+# bspc rule -a discord desktop=^3 follow=off 
+# bspc rule -a steam desktop=^4 follow=off 
+
+# Get the width of the currently active screen
+#local width = $(bspc query -T -m | jq '.rectangle.width')

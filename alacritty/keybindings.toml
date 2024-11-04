@@ -1,0 +1,19 @@
+[[keyboard.bindings]]
+chars = "\u001BF"
+key = "Right"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001BB"
+key = "Left"
+mods = "Alt"
+
+[[keyboard.bindings]]
+chars = "\u001BF"
+key = "Right"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001BB"
+key = "Left"
+mods = "Control"

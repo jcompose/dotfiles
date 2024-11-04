@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+cd "$(fd -H -t d | fzf)"
