@@ -1,0 +1,214 @@
+networks:
+  docker0:
+    name: docker0
+    driver: bridge
+
+services:
+
+  # Dashy for home automation & services dashboard
+  dashy:
+    image: lissy93/dashy
+    container_name: dashy
+    volumes:
+      - /home/jackson/.config/dashy/conf.yml:/app/user-data/conf.yml
+    environment:
+      - NODE_ENV=production
+      - UID=1000
+      - GID=1000
+    ports:
+      - 80:8080
+      - 443:8443
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Jellyfin for playing media
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Detroit
+    ports:
+      - 55556:8096
+    volumes:
+      - /home/jackson/.config/jellyfin:/config
+      - /home/jackson/.cache/jellyfin:/cache
+      - /home/jackson/Music:/data/jackson/Music
+      - /home/jackson/TV_Shows:/data/jackson/TV_Shows
+      - /home/jackson/Videos:/data/jackson/Videos
+      - /home/jackson/Movies:/data/jackson/Movies
+      - /home/jackson/Books:/data/jackson/Books
+      - /home/jackson/AudioBooks:/data/jackson/AudioBooks
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Jellyseerr for requests
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=America/Detroit
+    ports:
+      - 55557:5055
+    volumes:
+      - /home/jackson/.config/jellyseerr:/app/config
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # qBittorrent for torrenting
+  qbittorrent:
+    container_name: qbittorrent
+    image: ghcr.io/hotio/qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Detroit
+    ports:
+      - 55558:8080
+      - 6887:6887
+      - 6887:6887/udp
+    volumes:
+      - /home/jackson/.config/qbittorrent:/config
+      - /home/jackson/Downloads:/Downloads
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Lidarr for Music
+  lidarr:
+    image: ghcr.io/hotio/lidarr
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Detroit
+    ports:
+      - 55559:8686
+    volumes:
+      - /home/jackson/.config/lidarr:/config
+      - /home/jackson/Music:/data/jackson/Music
+      - /home/jackson/Downloads:/Downloads
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Sonarr for TV Shows
+  sonarr:
+    image: ghcr.io/hotio/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Detroit
+    ports:
+      - 55560:8989
+    volumes:
+      - /home/jackson/.config/sonarr:/config
+      - /home/jackson/TV_Shows:/data/jackson/TV_Shows
+      - /home/jackson/Downloads:/Downloads
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Radarr for Movies
+  radarr:
+    image: ghcr.io/hotio/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Detroit
+    ports:
+      - 55561:7878
+    volumes:
+      - /home/jackson/.config/radarr:/config
+      - /home/jackson/Movies:/data/jackson/Movies
+      - /home/jackson/Downloads:/Downloads
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Readarr for Books and Audiobooks
+  readarr:
+    image: ghcr.io/hotio/readarr
+    container_name: readarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Detroit
+    ports:
+      - 55562:8787
+    volumes:
+      - /home/jackson/.config/readarr:/config
+      - /home/jackson/Books:/data/jackson/Books
+      - /home/jackson/AudioBooks:/data/jackson/AudioBooks
+      - /home/jackson/Downloads:/Downloads
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Bazarr for subtitles
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORTS=6767/tcp,6767/udp
+      - TZ=America/Detroit
+    ports:
+      - 55563:6767
+    volumes:
+      - /home/jackson/.config/bazarr:/config
+      - /home/jackson/TV_Shows:/data/jackson/TV_Shows
+      - /home/jackson/Movies:/data/jackson/Movies
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Prowlarr for indexing
+  prowlarr:
+    image: ghcr.io/hotio/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=002
+      - TZ=America/Detroit
+    ports:
+      - 55564:9696
+    volumes:
+      - /home/jackson/.config/prowlarr:/config
+    restart: unless-stopped
+    networks:
+      - docker0
+
+  # Flaresolverr for proxying cloudflare sites
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Detroit
+      - LOG_LEVEL=info
+    ports:
+      - 55565:8191
+    restart: unless-stopped
+    networks:
+      - docker0

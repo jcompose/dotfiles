@@ -1,3 +1,4 @@
+-- stylua: ignore start
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
@@ -30,34 +31,6 @@ map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
--- stylua: ignore start
-
--- toggle options
-LazyVim.toggle.map("<leader>uf", LazyVim.toggle.format())
-LazyVim.toggle.map("<leader>uF", LazyVim.toggle.format(true))
-LazyVim.toggle.map("<leader>us", LazyVim.toggle("spell", { name = "Spelling" }))
-LazyVim.toggle.map("<leader>uw", LazyVim.toggle("wrap", { name = "Wrap" }))
-LazyVim.toggle.map("<leader>uL", LazyVim.toggle("relativenumber", { name = "Relative Number" }))
-LazyVim.toggle.map("<leader>ud", LazyVim.toggle.diagnostics)
-LazyVim.toggle.map("<leader>ul", LazyVim.toggle.number)
-LazyVim.toggle.map("<leader>uc",
-  LazyVim.toggle("conceallevel", { values = { 0, vim.o.conceallevel > 0 and vim.o.conceallevel or 2 } }))
-LazyVim.toggle.map("<leader>uT", LazyVim.toggle.treesitter)
-LazyVim.toggle.map("<leader>ub", LazyVim.toggle("background", { values = { "light", "dark" }, name = "Background" }))
-if vim.lsp.inlay_hint then
-  LazyVim.toggle.map("<leader>uh", LazyVim.toggle.inlay_hints)
-end
-
--- lazygit
-map("n", "<leader>gg", function() LazyVim.lazygit({ cwd = LazyVim.root.git() }) end, { desc = "Lazygit (Root Dir)" })
-map("n", "<leader>gG", function() LazyVim.lazygit() end, { desc = "Lazygit (cwd)" })
-map("n", "<leader>gb", LazyVim.lazygit.blame_line, { desc = "Git Blame Line" })
-map("n", "<leader>gB", LazyVim.lazygit.browse, { desc = "Git Browse" })
-
--- highlights under cursor
-map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
-map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
-
 -- floating terminal
 local lazyterm = function() LazyVim.terminal(nil, { cwd = LazyVim.root() }) end
 map("n", "<leader>ft", lazyterm, { desc = "Terminal (Root Dir)" })
@@ -84,9 +57,9 @@ map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 -----------
 
 map({ "n", "v" }, "<F6>", vim.fn.execute('!' .. vim.fn.getline('.')), { desc = "Run As Shell Cmd" })
-map("n", "gf", require("obsidian").util.gf_passthrough(), { remap = false, expr = true, buffer = true })
+-- map("n", "gf", require("obsidian").util.gf_passthrough(), { remap = false, expr = true, buffer = true })
 -- map("n", "<leader>ch", require("obsidian").util.toggle_checkbox(), { buffer = true }) -- FIXME: why does this error out
-map("n", "<cr>", require("obsidian").util.smart_action(), { buffer = true, expr = true })
+-- map("n", "<cr>", require("obsidian").util.smart_action(), { buffer = true, expr = true })
 map("n", "<leader>/", ":CommentToggle<cr>", { silent = true })
 map("v", "<leader>/", ":'<,'>CommentToggle<cr>", { silent = true })
 
