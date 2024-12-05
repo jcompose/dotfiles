@@ -1,0 +1,23 @@
+---
+# Page meta info, like heading, footer text and nav links
+pageInfo:
+  title: jcompose.com
+  description: 
+
+navLinks:
+  footerText: "Copyright © 2024 jcompose.com"
+  logo:
+
+# Optional app settings and configuration
+appConfig:
+  theme: nord
+
+# Main content - An array of sections, each containing an array of items
+sections:
+- name: Self-Hosted
+  icon: fas fa-rocket
+  items:
+  - title: Jellyfin
+    description: Media Player
+    icon: https://styles.redditmedia.com/t5_sl8v7/styles/communityIcon_mm8evt5b5oc21.png
+    url: https://jellyfin.jcompose.com/

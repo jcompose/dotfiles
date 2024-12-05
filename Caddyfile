@@ -1,0 +1,25 @@
+(secure) {
+  header {
+    # disable FLoC tracking
+    Permissions-Policy interest-cohort=()
+
+    # enable HSTS
+    Strict-Transport-Security max-age=31536000;
+
+    # disable clients from sniffing the media type
+    X-Content-Type-Options nosniff
+
+    # clickjacking protection
+    X-Frame-Options DENY
+  }
+}
+
+https://jcompose.com {
+  import secure
+  reverse_proxy 192.168.3.1:8080
+}
+
+https://jellyfin.jcompose.com {
+  import secure
+  reverse_proxy 192.168.3.1:8096
+}
