@@ -1,4 +1,4 @@
-(secure) {
+{
   header {
     # disable FLoC tracking
     Permissions-Policy interest-cohort=()
@@ -12,14 +12,23 @@
     # clickjacking protection
     X-Frame-Options DENY
   }
+
+  tls {
+    dns cloudflare rk8aBRonEyGwCB1hmXia7APA6aWUu7UkaMPpI9fO
+  }
 }
 
-https://jcompose.com {
-  import secure
+jcompose.com {
   reverse_proxy 192.168.3.1:8080
 }
 
-https://jellyfin.jcompose.com {
-  import secure
-  reverse_proxy 192.168.3.1:8096
+*.jcompose.com {
+  @jellyfin host jellyfin.jcompose.com
+  handle @jellyfin {
+    reverse_proxy 192.168.3.1:8096
+  }
+
+  handle {
+    abort
+  }
 }
