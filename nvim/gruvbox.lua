@@ -1,10 +1,11 @@
 return {
   { "ellisonleao/gruvbox.nvim" },
   { "navarasu/onedark.nvim" },
+  { "sainnhe/sonokai" },
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "onedark",
+      colorscheme = "gruvbox",
     },
   },
 }

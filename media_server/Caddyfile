@@ -1,34 +1,58 @@
-{
-  header {
-    # disable FLoC tracking
-    Permissions-Policy interest-cohort=()
+(secure) {
+        header {
+                # Disable server information
+                -X-Powered-By
 
-    # enable HSTS
-    Strict-Transport-Security max-age=31536000;
+                # disable FLoC tracking
+                Permissions-Policy interest-cohort=()
 
-    # disable clients from sniffing the media type
-    X-Content-Type-Options nosniff
+                # enable HSTS
+                Strict-Transport-Security max-age=15552000; includeSubDomains; preload
 
-    # clickjacking protection
-    X-Frame-Options DENY
-  }
+                # enable XSS protection
+                Referrer-Policy no-referrer
 
-  tls {
-    dns cloudflare rk8aBRonEyGwCB1hmXia7APA6aWUu7UkaMPpI9fO
-  }
+                # enable CSP
+                Content-Security-Policy default-src none; frame-src none; frame-ancestors none; object-src none; script-src self; style-src self; img-src self; connect-src self; font-src self; media-src self; form-action self; base-uri self; manifest-src self; worker-src self
+
+                # disable clients from sniffing the media type
+                X-Content-Type-Options nosniff
+
+                # clickjacking protection
+                X-Frame-Options DENY
+        }
+        tls {
+                protocols tls1.3
+        }
 }
 
-jcompose.com {
-  reverse_proxy 192.168.3.1:8080
+(cloudflare) {
+        tls {
+                dns cloudflare rk8aBRonEyGwCB1hmXia7APA6aWUu7UkaMPpI9fO
+        }
 }
 
-*.jcompose.com {
-  @jellyfin host jellyfin.jcompose.com
-  handle @jellyfin {
-    reverse_proxy 192.168.3.1:8096
-  }
+192.168.0.2 {
+        import secure
+        reverse_proxy 192.168.3.1:8080
+}
 
-  handle {
-    abort
-  }
+jcompose.com *.jcompose.com {
+        import secure
+        import cloudflare
+
+        @dashy host jcompose.com
+        @jellyfin host jellyfin.jcompose.com
+
+        handle @dashy {
+                reverse_proxy 192.168.3.1:8080
+        }
+
+        handle @jellyfin {
+                reverse_proxy 192.168.3.1:8096
+        }
+
+        handle {
+                abort
+        }
 }
